@@ -6,12 +6,21 @@ provider "aws" {
 
 # Create the bucket
 resource "aws_s3_bucket" "sample" {
-  bucket = "sample-tf-bucket-87483"
+  bucket = "sample-tf-bucket-test9834773"
 
   # example tags as additional info on the bucket
   tags = {
     Key = "Department",
     Value = "Marketing"
+  }
+}
+
+# Bucket key enabled
+resource "aws_s3_bucket_server_side_encryption_configuration" "name" {
+  bucket = aws_s3_bucket.sample.id
+
+  rule {
+    bucket_key_enabled = true
   }
 }
 
@@ -26,7 +35,6 @@ resource "aws_s3_bucket_public_access_block" "sample" {
 }
 
 # Enable website hosting
-
 resource "aws_s3_bucket_website_configuration" "sample" {
   bucket = aws_s3_bucket.sample.id
 
@@ -53,24 +61,25 @@ data "aws_iam_policy_document" "allow_access_from_anywhere" {
       "s3:GetObject",
     ]
     resources = [
+      aws_s3_bucket.sample.arn,
       "${aws_s3_bucket.sample.arn}/*",
     ]
   }
 
-  statement {
-    principals {
-      type = "*"
-      identifiers = ["*"]
-    }
-    effect = "Deny"
-    actions = [
-      "s3:DeleteObject"
-    ]
-    resources = [
-      "${aws_s3_bucket.sample.arn}/index.html",
-      "${aws_s3_bucket.sample.arn}/style.html",
-    ]
-  }
+  # statement {
+  #   principals {
+  #     type = "*"
+  #     identifiers = ["*"]
+  #   }
+  #   effect = "Deny"
+  #   actions = [
+  #     "s3:DeleteObject"
+  #   ]
+  #   resources = [
+  #     "${aws_s3_bucket.sample.arn}/index.html",
+  #     "${aws_s3_bucket.sample.arn}/style.html",
+  #   ]
+  # }
 }
 
 # Upload files on the bucket
