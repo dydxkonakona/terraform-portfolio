@@ -4,3 +4,4 @@
 - [Shortcuts & Tips](./shorcuts_tips.md)
 - [Launch an EC2 Instance](./launch-ec2.md)
 - [Launch an S3 bucket with Static Website Hosting](./launch-s3.md)
+- [Launch a CloudFront Distribution with S3 as origin](./launch-cdn.md)
